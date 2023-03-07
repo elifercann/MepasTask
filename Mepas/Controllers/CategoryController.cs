@@ -80,7 +80,7 @@ namespace Mepas.Controllers
             {
                 var worksheet = workbook.Worksheet(_sheetName);
                 //seçilen hücre için idye göre verilerin getirilmesi için gerekli kod
-                var row = worksheet.RowsUsed()
+                var row = worksheet.RowsUsed().Skip(1)
                     .FirstOrDefault(r => r.Cell(1).GetValue<int>() == id);
                 if (row == null)
                 {
@@ -102,7 +102,7 @@ namespace Mepas.Controllers
             using (var workbook = new XLWorkbook(_fileName))
             {
                 var worksheet = workbook.Worksheet(_sheetName);
-                var row = worksheet.RowsUsed()
+                var row = worksheet.RowsUsed().Skip(1)
                     .FirstOrDefault(r => r.Cell(1).GetValue<int>() == id);
                 if (row == null)
                 {
@@ -125,7 +125,7 @@ namespace Mepas.Controllers
                     var worksheet = workbook.Worksheet(_sheetName);
 
                     // silinecek verinin idye göre getirilmesi
-                    var rowToDelete = worksheet.RowsUsed()
+                    var rowToDelete = worksheet.RowsUsed().Skip(1)
                         .FirstOrDefault(row => row.Cell(1).GetValue<int>() == id);
 
                     if (rowToDelete != null)

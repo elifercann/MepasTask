@@ -104,9 +104,8 @@
                 @Html.DisplayFor(modelItem => item.updatedDate)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    <a href="/Product/Edit/@item.id"> Güncelle</a>
+                    <a href="/Product/Delete/@item.id"> Sil</a>
             </td>
         </tr>
 }

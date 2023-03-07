@@ -1,58 +1,46 @@
 ﻿using ClosedXML.Excel;
-using DataAccess.Repository;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mepas.Controllers
 {
-    public class ProductController : Controller
+    
+    public class UserController : Controller
     {
         private readonly string _fileName = @"C:\Users\ercan\Desktop\task\veri2.xlsx";
-        private readonly string _sheetName = "Products";
-
-
-
+        private readonly string _sheetName = "Users";
         public IActionResult Index()
         {
             using (var workbook = new XLWorkbook(_fileName))
             {
                 var worksheet = workbook.Worksheet(_sheetName);
-                var products = worksheet.RowsUsed()
-                    .Skip(1) // Skip the header row
-                    .Select(row => new Product
+                var users = worksheet.RowsUsed()
+                    .Skip(1) // başlık satırını atlamak için
+                    .Select(row => new User
                     {
-                        //propertyler hangi alandaysa tek tek alınıyor tipin göre listeleniyor
                         id = row.Cell(1).GetValue<int>(),
                         name = row.Cell(2).GetValue<string>(),
-                        categoryId = row.Cell(3).GetValue<int>(),
-                        price = row.Cell(4).GetValue<decimal>(),
-                        unit = row.Cell(5).GetValue<string>(),
-                        stock = row.Cell(6).GetValue<int>(),
-                        color = row.Cell(7).GetValue<string>(),
-                        weight = row.Cell(8).GetValue<decimal>(),
-                        width = row.Cell(9).GetValue<decimal>(),
-                        height = row.Cell(10).GetValue<decimal>(),
-                        //bunları açınca hata veryor user tablosu eklenince ayarla
-                        //addedUserId = row.Cell(11).GetValue<int>(),
-                        //updatedUserId = row.Cell(12).GetValue<int>(),
-                        //createdDate = row.Cell(13).GetValue<DateTime>(),
-                        //updatedDate = row.Cell(14).GetValue<DateTime>()
+                        surname = row.Cell(3).GetValue<string>(),
+                        username = row.Cell(4).GetValue<string>(),
+                        password = row.Cell(5).GetValue<string>(),
+                        status = row.Cell(6).GetValue<bool>(),
+                        
 
                     })
                     .ToList();
-                return View(products);
+                return View(users);
             }
         }
-
         public IActionResult Create()
         {
+
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Product product)
+        public IActionResult Create(User user)
         {
-
             try
             {
                 using (var workbook = new XLWorkbook(_fileName))
@@ -67,19 +55,11 @@ namespace Mepas.Controllers
                         //eklenecek alan için son satırdan sonrası ayarlanıyor
                         var newRow = worksheet.Row(lastRow + 1);
                         newRow.Cell(1).SetValue(lastRow);
-                        newRow.Cell(2).SetValue(product.name);
-                        newRow.Cell(3).SetValue(product.categoryId);
-                        newRow.Cell(4).SetValue(product.price);
-                        newRow.Cell(5).SetValue(product.unit);
-                        newRow.Cell(6).SetValue(product.stock);
-                        newRow.Cell(7).SetValue(product.color);
-                        newRow.Cell(8).SetValue(product.weight);
-                        newRow.Cell(9).SetValue(product.width);
-                        newRow.Cell(10).SetValue(product.height);
-                        newRow.Cell(11).SetValue(product.addedUserId);
-                        newRow.Cell(12).SetValue(product.updatedUserId);
-                        newRow.Cell(13).SetValue(product.createdDate);
-                        newRow.Cell(14).SetValue(product.updatedDate);
+                        newRow.Cell(2).SetValue(user.name);
+                        newRow.Cell(3).SetValue(user.surname);
+                        newRow.Cell(4).SetValue(user.username);
+                        newRow.Cell(5).SetValue(user.password);
+                        newRow.Cell(6).SetValue(user.status);
 
                         workbook.Save();
                     }
@@ -87,7 +67,7 @@ namespace Mepas.Controllers
                     {
                         //boş ise gerekli hata yazılıyor
                         ModelState.AddModelError(string.Empty, $"Worksheet '{_sheetName}'çalışma kitabında bulunamadı.");
-                        return View(product);
+                        return View(user);
                     }
                 }
                 return RedirectToAction(nameof(Index));
@@ -95,11 +75,12 @@ namespace Mepas.Controllers
             catch (Exception ex)
             {
 
-                ModelState.AddModelError(string.Empty, "Ürün kaydedilirken hata oluştu: " + ex.Message);
-                return View(product);
+                ModelState.AddModelError(string.Empty, "Kullanıcı kaydedilirken hata oluştu: " + ex.Message);
+                return View(user);
             }
 
         }
+
         public IActionResult Edit(int id)
         {
             using (var workbook = new XLWorkbook(_fileName))
@@ -112,54 +93,37 @@ namespace Mepas.Controllers
                 {
                     return NotFound();
                 }
-                var product = new Product
+                var user = new User
                 {
                     id = row.Cell(1).GetValue<int>(),
                     name = row.Cell(2).GetValue<string>(),
-                    categoryId = row.Cell(3).GetValue<int>(),
-                    price = row.Cell(4).GetValue<decimal>(),
-                    unit = row.Cell(5).GetValue<string>(),
-                    stock = row.Cell(6).GetValue<int>(),
-                    color = row.Cell(7).GetValue<string>(),
-                    weight = row.Cell(8).GetValue<decimal>(),
-                    width = row.Cell(9).GetValue<decimal>(),
-                    height = row.Cell(10).GetValue<decimal>(),
-                    //addedUserId = row.Cell(11).GetValue<int>(),
-                    updatedUserId = row.Cell(12).GetValue<int>(),
-                    //createdDate = row.Cell(13).GetValue<DateTime>(),
-                    updatedDate = row.Cell(14).GetValue<DateTime>(),
-                   
+                    surname = row.Cell(3).GetValue<string>(),
+                    username = row.Cell(4).GetValue<string>(),
+                    password = row.Cell(5).GetValue<string>(),
+                    status = row.Cell(6).GetValue<bool>(),
 
                 };
-                return View(product);
+                return View(user);
             }
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, Product product)
+        public IActionResult Edit(int id, User user)
         {
             using (var workbook = new XLWorkbook(_fileName))
             {
                 var worksheet = workbook.Worksheet(_sheetName);
-                var row = worksheet.RowsUsed().Skip(1)//ilk satırı atlıyor,ilk satır başlık
+                var row = worksheet.RowsUsed().Skip(1)
                     .FirstOrDefault(r => r.Cell(1).GetValue<int>() == id);
                 if (row == null)
                 {
                     return NotFound();
                 }
-                row.Cell(2).SetValue(product.name);
-                row.Cell(3).SetValue(product.categoryId);
-                row.Cell(4).SetValue(product.price);
-                row.Cell(5).SetValue(product.unit);
-                row.Cell(6).SetValue(product.stock);
-                row.Cell(7).SetValue(product.color);
-                row.Cell(8).SetValue(product.weight);
-                row.Cell(9).SetValue(product.width);
-                row.Cell(10).SetValue(product.height);
-                //row.Cell(11).SetValue(product.addedUserId);
-                row.Cell(12).SetValue(product.updatedUserId);
-                //row.Cell(13).SetValue(product.createdDate);
-                row.Cell(14).SetValue(product.updatedDate);
+                row.Cell(2).SetValue(user.name);
+                row.Cell(3).SetValue(user.surname);
+                row.Cell(4).SetValue(user.username);
+                row.Cell(5).SetValue(user.password);
+                row.Cell(6).SetValue(user.status);
 
                 workbook.Save();
             }
@@ -198,7 +162,35 @@ namespace Mepas.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        public User GetUserByUsername(string username)
+        {
+            using (var workbook = new XLWorkbook(_fileName))
+            {
+                var worksheet = workbook.Worksheet(_sheetName);
+                if (worksheet.IsEmpty())
+                {
+                    return null;
+                }
+
+                var row = worksheet.RowsUsed()
+                    .Skip(1) // başlık atlanıyor
+                    .FirstOrDefault(r => r.Cell(3).Value.ToString() == username);//username 4.hücrede
+
+                if (row == null)
+                {
+                    return null;
+                }
+
+                return new User
+                {
+                    name = row.Cell(1).Value.ToString(),
+                    surname = row.Cell(2).Value.ToString(),
+                    username = row.Cell(3).Value.ToString(),
+                    password = row.Cell(4).Value.ToString(),
+                    status = bool.Parse(row.Cell(5).Value.ToString())
+                };
+            }
+        }
     }
-
 }
-

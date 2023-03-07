@@ -1,19 +1,20 @@
 ﻿@model Entities.Concrete.Product
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
 <h4>Product</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-           
+         
             <div class="form-group">
                 <label asp-for="name" class="control-label"></label>
                 <input asp-for="name" class="form-control" />
@@ -59,26 +60,26 @@
                 <input asp-for="height" class="form-control" />
                 <span asp-validation-for="height" class="text-danger"></span>
             </div>
+         
             <div class="form-group">
-                <label asp-for="addedUserId" class="control-label"></label>
-                <input asp-for="addedUserId" class="form-control" />
-                <span asp-validation-for="addedUserId" class="text-danger"></span>
+                <label asp-for="updatedUserId" class="control-label"></label>
+                <input asp-for="updatedUserId" class="form-control" />
+                <span asp-validation-for="updatedUserId" class="text-danger"></span>
             </div>
-        
+      
             <div class="form-group">
-                <label asp-for="createdDate" class="control-label"></label>
-                <input asp-for="createdDate" class="form-control" />
-                <span asp-validation-for="createdDate" class="text-danger"></span>
+                <label asp-for="updatedDate" class="control-label"></label>
+                <input asp-for="updatedDate" class="form-control" />
+                <span asp-validation-for="updatedDate" class="text-danger"></span>
             </div>
-       
             <div class="form-group">
-                <input type="submit" value="Kaydet" class="btn btn-primary" />
+                <input type="submit" value="Güncelle" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Ana Sayfaya Dön</a>
 </div>
 
