@@ -1,0 +1,28 @@
+﻿@model List<Category>
+@{
+    ViewData["Title"] = "CreateExcelCategory";
+}
+
+<h1>Kategoriler</h1>
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Id</th>
+        <th>Kategori Adı</th>
+        <th>Sil</th>
+        <th>Güncelle</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.id</td>
+            <td>@item.name</td>
+           
+            <td><a href="/Home/DeleteDestination/@item.id" class="btn btn-outline-danger">Sil</a></td>
+            <td><a href="/Admin/Destination/UpdateDestination/@item.id" class="btn btn-outline-success">Güncelle</a></td>
+        </tr>
+    }
+</table>
+@*<a href="/Admin/Destination/AddDestination" class="btn btn-outline-primary">Yeni Tur Rotası</a>
+*@
+
