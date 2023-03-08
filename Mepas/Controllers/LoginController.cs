@@ -17,33 +17,38 @@ namespace Mepas.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Index(LoginViewModel model)
+        public IActionResult Index(string username,string password)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(username))
             {
-                var user = GetUserByUsername(model.username);
-
-                if (user != null && user.password == model.password)
-                {
-                    // Authentication successful, redirect to home page
-                    return RedirectToAction("Index", "Home");
-                }
-                else if (string.IsNullOrEmpty(model.username))
-                {
-                    ModelState.AddModelError("Username", "Username is required.");
-                }
-                else
-                {
-                    ModelState.AddModelError("Password", "Incorrect password.");
-                }
+                ModelState.AddModelError(string.Empty, "Username is required.");
+                return View();
             }
 
-            return RedirectToAction("Index","Product");
+            var user = GetUserByUsername(username);
+
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View();
+            }
+
+            if (user.password != password)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View();
+            }
+
+            // Authentication successful, create session
+            HttpContext.Session.SetString("username", username);
+
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult Logout()
         {
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index");
+            // Clear session
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
         public User GetUserByUsername(string username)
         {

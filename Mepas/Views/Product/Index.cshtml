@@ -105,9 +105,31 @@
             </td>
             <td>
                     <a href="/Product/Edit/@item.id"> Güncelle</a>
-                    <a href="/Product/Delete/@item.id"> Sil</a>
+                    @Html.ActionLink("Sil","Delete", "Product", new { id = item.id }, new { @class = "btn btn-danger aaa", data_id = @item.id ,onclick = "confirmDelete(this.href); return false;"})
             </td>
         </tr>
 }
     </tbody>
 </table>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
+<script>
+    function confirmDelete(link) {
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: "Silme işlemi geri alınamaz!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, sil!',
+            cancelButtonText: 'Vazgeç'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                // Silme işlemi devam edecek
+                window.location.href = link;
+            }
+        })
+    }
+</script>
