@@ -216,6 +216,9 @@
             "projectReferences": {
               "C:\\Users\\ercan\\source\\repos\\MepasTask\\DataAccess\\DataAccess.csproj": {
                 "projectPath": "C:\\Users\\ercan\\source\\repos\\MepasTask\\DataAccess\\DataAccess.csproj"
+              },
+              "C:\\Users\\ercan\\source\\repos\\MepasTask\\Entities\\Entities.csproj": {
+                "projectPath": "C:\\Users\\ercan\\source\\repos\\MepasTask\\Entities\\Entities.csproj"
               }
             }
           }
@@ -261,6 +264,10 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[6.0.12, )"
+            },
+            "System.Data.OleDb": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             }
           },
           "imports": [

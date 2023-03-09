@@ -13,7 +13,7 @@ namespace DataAccess.Repository
     public class ProductRepository:IProductRepository
     {
         private string _pathToExcelFile;
-
+        private string pathToExcelFile = @"C:\Users\ercan\Desktop\task\veri2.xlsx";
         public ProductRepository(string pathToExcelFile)
         {
             _pathToExcelFile = pathToExcelFile;
@@ -28,6 +28,7 @@ namespace DataAccess.Repository
             using (var package = new ExcelPackage(new FileInfo(_pathToExcelFile)))
             {
                 var worksheet = package.Workbook.Worksheets["Products"];
+                //null exception hatası
                 var start = worksheet.Dimension.Start;
                 var end = worksheet.Dimension.End;
                 var products = new List<Product>();

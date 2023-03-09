@@ -5,79 +5,83 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using User = Entities.Concrete.User;
+using Microsoft.Office.Interop.Excel;
+using System.Data.OleDb;
+using System.Security.Claims;
+using Microsoft.Office.Interop.Excel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Mepas.Controllers
 {
     public class LoginController : Controller
     {
         private readonly string _fileName = @"C:\Users\ercan\Desktop\task\veri2.xlsx";
+        //string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\ercan\\Desktop\\task\\veri2.xlsx;Extended Properties='Excel 12.0;HDR=YES;'";
+
         private readonly string _sheetName = "Users";
+        private readonly ILogger<LoginController> _logger;
+
+        public LoginController(ILogger<LoginController> logger)
+        {
+            _logger = logger;
+        }
+         [Authorize]
         public IActionResult Index()
         {
             return View();
         }
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         [HttpPost]
-        public IActionResult Index(string username,string password)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (string.IsNullOrEmpty(username))
+            var filePath = @"C:\Users\ercan\Desktop\task\veri2.xlsx";
+            var app = new Application();
+            var workbook = app.Workbooks.Open(filePath);
+            Worksheet worksheet = (Worksheet)workbook.Worksheets.get_Item(1);
+            var range = worksheet.UsedRange;
+            
+
+            for (int row = 2; row <= range.Rows.Count; row++)
             {
-                ModelState.AddModelError(string.Empty, "Username is required.");
-                return View();
-            }
+                var usernameCell = (Microsoft.Office.Interop.Excel.Range)range.Cells[row, 1];
+                var passwordCell = (Microsoft.Office.Interop.Excel.Range)range.Cells[row, 2];
+                var username = usernameCell.Value2?.ToString();
+                var password = passwordCell.Value2?.ToString();
 
-            var user = GetUserByUsername(username);
-
-            if (user == null)
-            {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return View();
-            }
-
-            if (user.password != password)
-            {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return View();
-            }
-
-            // Authentication successful, create session
-            HttpContext.Session.SetString("username", username);
-
-            return RedirectToAction("Index", "Home");
-        }
-        public IActionResult Logout()
-        {
-            // Clear session
-            HttpContext.Session.Clear();
-            return RedirectToAction("Index", "Home");
-        }
-        public User GetUserByUsername(string username)
-        {
-            using (var workbook = new XLWorkbook(_fileName))
-            {
-                var worksheet = workbook.Worksheet(_sheetName);
-                if (worksheet.IsEmpty())
+                if (usernameCell== null || passwordCell == null)
                 {
-                    return null;
+                    continue;
                 }
+              
 
-                var row = worksheet.RowsUsed()
-                    .Skip(1) // başlık atlanıyor
-                    .FirstOrDefault(r => r.Cell(3).Value.ToString() == username);//username 4.hücrede
-
-                if (row == null)
+                if (model.username == username && model.password == password)
                 {
-                    return null;
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, model.username)
+                    };
+                    var identity = new ClaimsIdentity(claims, "login");
+                    var principal = new ClaimsPrincipal(identity);
+                    await HttpContext.SignInAsync(principal);
+                    return RedirectToAction("Index", "Home");
                 }
-
-                return new User
-                {
-                    name = row.Cell(1).Value.ToString(),
-                    surname = row.Cell(2).Value.ToString(),
-                    username = row.Cell(3).Value.ToString(),
-                    password = row.Cell(4).Value.ToString(),
-                    status = bool.Parse(row.Cell(5).Value.ToString())
-                };
             }
+
+            ModelState.AddModelError("", "Invalid login attempt.");
+            return View();
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Login", "Login");
+        }
+
+      
     }
 }
+

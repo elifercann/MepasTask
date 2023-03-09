@@ -1,3 +1,5 @@
+using DataAccess.Abstract;
+using DataAccess.Repository;
 using Mepas.Controllers;
 using System.Configuration;
 
@@ -5,6 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton("connectionString");
+builder.Services.AddAuthentication("MyScheme")
+    .AddCookie("MyScheme", options =>
+    {
+        options.LoginPath = "/Login/Login";
+    });
 
 
 var app = builder.Build();

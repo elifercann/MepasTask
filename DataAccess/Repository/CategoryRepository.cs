@@ -13,6 +13,7 @@ namespace DataAccess.Repository
     public class CategoryRepository : ICategoryRepository
     {
         private string _pathToExcelFile;
+        private string pathToExcelFile = @"C:\Users\ercan\Desktop\task\veri2.xlsx";
         public CategoryRepository(string pathToExcelFile)
         {
             _pathToExcelFile = pathToExcelFile;

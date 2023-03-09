@@ -265,7 +265,6 @@ C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\runtimes\win-x64\na
 C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
 C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\runtimes\unix\lib\netstandard2.0\System.Data.SqlClient.dll
 C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Data.SqlClient.dll
-C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
 C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
@@ -309,3 +308,10 @@ C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\Irony.dll
 C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\SixLabors.Fonts.dll
 C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\System.IO.Packaging.dll
 C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\XLParser.dll
+C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\System.Data.OleDb.dll
+C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\System.Diagnostics.PerformanceCounter.dll
+C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.OleDb.dll
+C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.PerformanceCounter.dll
+C:\Users\ercan\source\repos\MepasTask\Mepas\bin\Debug\net6.0\libman.json
+C:\Users\ercan\source\repos\MepasTask\Mepas\obj\Debug\net6.0\Interop.Microsoft.Office.Core.dll
+C:\Users\ercan\source\repos\MepasTask\Mepas\obj\Debug\net6.0\Mepas.csproj.ResolveComReference.cache
