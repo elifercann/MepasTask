@@ -3,10 +3,12 @@ using DataAccess.Abstract;
 using DataAccess.Repository;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mepas.Controllers
 {
+   
     public class CategoryController : Controller
     {
 
@@ -158,27 +160,29 @@ namespace Mepas.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult GetByProductList(int categoryId)
-        {
-            using (var workbook = new XLWorkbook(_fileName))
-            {
-                var worksheet = workbook.Worksheet(_sheetName);
-                var categories = worksheet.RowsUsed()
-                         .Skip(1) // başlık satırını atlamak için
-                            .Select(row => new Category
-                           {
-                              id = row.Cell(1).GetValue<int>(),
-                              name = row.Cell(2).GetValue<string>(),
-                              //categoryId = int.TryParse(row.Cell(3).Value.ToString(), out int result) ? result : 0,
-                            })
-                             .ToList();
-                var productsByCategory = categories.GroupBy(p => p.id);
-                return View(productsByCategory);
+        //hatalı alanlar bakılacak
+        //public IActionResult GetByProductList(int categoryId)
+        //{
+        //    using (var workbook = new XLWorkbook(_fileName))
+        //    {
+        //        var worksheet = workbook.Worksheet(_sheetName);
+        //        var categories = worksheet.RowsUsed()
+        //                 .Skip(1) // başlık satırını atlamak için
+        //                    .Select(row => new Category
+        //                   {
+        //                      id = row.Cell(1).GetValue<int>(),
+        //                      name = row.Cell(2).GetValue<string>(),
+        //                      //categoryId = int.TryParse(row.Cell(3).Value.ToString(), out int result) ? result : 0,
+        //                    })
+        //                     .ToList();
+        //        var productsByCategory = categories.GroupBy(p => p.id);
+        //        return View(productsByCategory);
 
-            }
+        //    }
 
 
-        }
+        //}
+        //hatalı kod
         //public IActionResult ExportProductsToExcel()
         //{
         //    using (var workbook = new XLWorkbook())

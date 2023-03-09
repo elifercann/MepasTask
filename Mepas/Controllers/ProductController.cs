@@ -1,10 +1,12 @@
 ﻿using ClosedXML.Excel;
 using DataAccess.Repository;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mepas.Controllers
 {
+ 
     public class ProductController : Controller
     {
         private readonly string _fileName = @"C:\Users\ercan\Desktop\task\veri2.xlsx";
@@ -32,12 +34,7 @@ namespace Mepas.Controllers
                         weight = row.Cell(8).GetValue<decimal>(),
                         width = row.Cell(9).GetValue<decimal>(),
                         height = row.Cell(10).GetValue<decimal>(),
-                        //bunları açınca hata veryor user tablosu eklenince ayarla
-                        //addedUserId = row.Cell(11).GetValue<int>(),
-                        //updatedUserId = row.Cell(12).GetValue<int>(),
-                        //createdDate = row.Cell(13).GetValue<DateTime>(),
-                        //updatedDate = row.Cell(14).GetValue<DateTime>()
-
+                       
                     })
                     .ToList();
                 return View(products);

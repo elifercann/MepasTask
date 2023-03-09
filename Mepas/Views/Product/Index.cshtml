@@ -43,18 +43,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.height)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.addedUserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.updatedUserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.createdDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.updatedDate)
-            </th>
+           
             <th></th>
         </tr>
     </thead>
@@ -91,20 +80,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.height)
             </td>
+          
             <td>
-                @Html.DisplayFor(modelItem => item.addedUserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.updatedUserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.createdDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.updatedDate)
-            </td>
-            <td>
-                    <a href="/Product/Edit/@item.id"> Güncelle</a>
+                    <a class="btn btn-primary" href="/Product/Edit/@item.id"> Güncelle</a>
                     @Html.ActionLink("Sil","Delete", "Product", new { id = item.id }, new { @class = "btn btn-danger aaa", data_id = @item.id ,onclick = "confirmDelete(this.href); return false;"})
             </td>
         </tr>

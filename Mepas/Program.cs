@@ -1,6 +1,7 @@
 using DataAccess.Abstract;
 using DataAccess.Repository;
 using Mepas.Controllers;
+using OfficeOpenXml;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession(options =>
+{
+    // Oturum süresi 30 dakika olarak ayarlanýr
+    //options.IdleTimeout = TimeSpan.FromMinutes(30);
+
+    // Cookie tabanlý oturum yönetimi
+    options.Cookie.Name = "MyScheme";
+    options.Cookie.MaxAge = TimeSpan.FromMinutes(60);
+    options.Cookie.IsEssential = true;
+});
 builder.Services.AddSingleton("connectionString");
 builder.Services.AddAuthentication("MyScheme")
     .AddCookie("MyScheme", options =>
@@ -31,9 +43,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseSession(); // Oturum yönetimini etkinleþtirir
+app.UseAuthentication(); // Kimlik doðrulamayý ekler
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Index}/{id?}");
